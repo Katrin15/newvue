@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+    }
+    .avatar {
+      display: block;
+      height: 40px;
+      margin: 0 auto;
+    }
+  </style>
+  
+  
+  
+  
+  <div id="app" v-cloak>
+    <table v-show="showList.show">
+      <caption>Количество пользователей: {{ list.length }}</caption>
+      <tr>
+        <th>имя</th>
+        <th>отчество</th>
+        <th>фамилия</th> 
+        <th>аватар</th>
+        <th>копирование</th>
+      </tr>
+      <tr v-for="item in list" :key="item.id">
+        <td>{{ item.name | capitalize}}</td>
+        <td>{{ item.patronymic }}</td> 
+        <td>{{ item.surname | capitalize }}</td>
+        <td>         
+          
+          <div v-if="item.img">
+            <img v-bind:src="item.img" alt="avatar" class="avatar">  
+          </div>
+          <div v-else>
+            <span>{{avatar.noMessage}}</span>
+            <img v-bind:src="avatar.defaultImg" alt="avatar" class="avatar">      
+          </div>          
+          
+        </td>
+        <td><button type="button" v-copy="item.name + ' ' + item.patronymic">копировать</button></td>
+
+      </tr>      
+    </table>
+    <button style="margin: 20px 0 0 50px;" type="button" v-on:click="toggleShowList()" v-tooltip="showList.message + ' пользователей'">{{showList.message}}</button>
+    
+
+  </div>
+  
+  
+  
+</body>
+
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/v-copy@0.1.0/dist/v-copy.min.js"></script>
+<script src="https://unpkg.com/v-tooltip"></script>
+<script>
+
+  
+  var app = new Vue({
+    el: '#app',
+    data: function() {
+      return {
+
+        avatar: {
+          noMessage: 'аватар отсутсвует',
+          defaultImg: 'https://cdn1.iconfinder.com/data/icons/freeline/32/account_friend_human_man_member_person_profile_user_users-256.png'
+        },
+        showList: {
+          show: true,
+          messageShow: 'показать',
+          messageHide: 'скрыть',
+          message: 'скрыть',
+        },
+
+        // Список пользователей
+        list: [
+          {
+            id: 1,
+            name: 'Алексей',
+            surname: 'Иванов',
+            patronymic: 'Николаевич',
+            img: 'assets/img/man.png',
+          },
+          {
+            id: 2,
+            name: 'Ольга',
+            surname: 'Иванова',
+            patronymic: 'Алексеевна',
+            img: 'assets/img/girl.png',
+          },
+          {
+            id: 3,
+            name: 'Екатерина',
+            surname: 'Сидорова',
+            patronymic: 'Алексеевна',
+            img: 'assets/img/girl2.png',
+          },
+          {
+            id: 4,
+            name: 'Александр',
+            surname: 'Козаков',
+            patronymic: 'Николаевич',
+            img: ''
+          },
+          {
+            id: 5,
+            name: 'Александр',
+            surname: 'Третьяков',
+            patronymic: 'Александрович',
+            img: 'assets/img/boy.png',
+          }
+        ]
+      };
+    },
+    methods: {
+      toggleShowList: function () {
+        this.showList.show = !this.showList.show;
+        this.showList.show ? this.showList.message = this.showList.messageHide : this.showList.message = this.showList.messageShow;
+      }
+    },
+    filters: {
+      capitalize: function (value) {
+        if (!value) return ''
+        return value.toUpperCase()
+      }
+    },
+
+  });
+
+  
+</script>
+
+</html>
